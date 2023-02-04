@@ -28,6 +28,17 @@ const createUser = (first_name,last_name, email) => {
     });
 }
 
+const getUser = (inputEmail) => {
+    return new Promise((resolve,reject)=>{
+        db.all(`SELECT email FROM users WHERE  email = ?`,[inputEmail],(err,data)=>{
+            if(err){
+                reject(err);
+            }
+            resolve(data)
+        });
+    });
+}
+
 const getUsers = () => {
     return new Promise((resolve, reject) => {
         db.all(`SELECT * FROM users`, [], (err, rows) => {
@@ -57,6 +68,7 @@ const deleteUser = (id) => {
     });
 }
 
+
 const closeDB = ()=>{
     db.close((err) => { console.error(err); });
 }
@@ -66,6 +78,7 @@ module.exports = {
     getUsers,
     updateUser,
     deleteUser,
-    closeDB
+    closeDB,
+    getUser
 }
 
