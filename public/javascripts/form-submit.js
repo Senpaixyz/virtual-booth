@@ -98,7 +98,7 @@ form.addEventListener('submit',function(e){
     })
     .catch(res =>{
         console.log(res);
-        raiseError(res.data.message);
+        raiseError("There's something wrong while Joining");
     });
 });
 

@@ -1,23 +1,46 @@
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('database.sqlite', (err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Connected to the database.');
-});
+const openDBPromise = new Promise(
+    (resolve,reject) =>{
+        const db = new sqlite3.Database('database.sqlite', (err) => {
+            if (err) {
+                console.error(err.message);
+                reject(err.message);
+            }
+            console.log('Connected to the database.');
+            resolve(db);
+        });
+    });
 
-db.run(`CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  email TEXT NOT NULL UNIQUE
-)`, (err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Table created.');
-});
+let db;
+
+try {
+    openDBPromise.then((res)=>{
+        db = res;
+
+        db.run(`CREATE TABLE IF NOT EXISTS users (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              first_name TEXT NOT NULL,
+              last_name TEXT NOT NULL,
+              email TEXT NOT NULL UNIQUE
+            )`, (err) => {
+                        if (err) {
+                            console.error(err.message);
+                        }
+            console.log('Table created.');
+        });
+    }).catch((err)=>{
+        console.log(err);
+    })
+} catch (err) {
+    // SQLITE_CANTOPEN can handle here!
+    console.log("SQLITE OPEN ERROR");
+    console.log(err);
+    return [];
+}
+
+
+
 
 const createUser = (first_name,last_name, email) => {
     db.run(`INSERT INTO users (first_name,last_name, email) VALUES (?,? , ?)`, [first_name,last_name, email], (err) => {
