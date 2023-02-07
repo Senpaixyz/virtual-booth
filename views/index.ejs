@@ -1,50 +1,84 @@
 <%- include('components/header'); -%>
+<%- include('components/not-auth-navbar.ejs') %>
+
 <!--Hey! This is the original version
 of Simple CSS Waves-->
 
-<div class="header">
+<div class="header pt-4 ">
+  <div id="message-container">
 
+  </div>
   <!--Content before waves-->
-  <div class="inner-header flex">
-    <div class="form-container">
-      <div class="form-card">
-        <h2 class="form-header text-4xl font-medium"><%= title %></h2>
-        <form method="POST" action="/create">
-          <div class="grid grid-cols-1 md:grid-cols-2  gap-1 md:gap-4">
-            <input
-                    type="text"
-                    class="form-input p-2 mb-4 "
-                    placeholder="First Name"
-                    id="first_name"
-                    name="first_name"
-            />
-            <input
-                    type="text"
-                    class="form-input p-2 mb-4"
-                    placeholder="Last Name"
-                    id="last_name"
-                    name="last_name"
-            />
-          </div>
+  <div class="pt-4 block md:flex xl:flex justify-center items-center z-1 w-full ">
+    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-2">
+      <div class="flex flex-col  col-span-2 mb-3 md:mb-1 xl:md-1 px-4 text-left">
+        <div class="w-full">
+          <h5 class="font-black underline text-gray-200 dark:text-gray-900 decoration-4 font-mono">LOREM IPSUM DOLOR</h5>
+          <h1 class="text-7xl font-black">Lorem ipsum <br/>dolor sit amet</h1>
+          <h4 class="text-md text-gray-200 text-left ">
+            Lorem ipsum dolor sit amet,
+            consectetueradipiscing elit. Aenean commodo ligula
+            eget dolor. Aenean massa
+          </h4>
 
-          <input
-                  type="email"
-                  class="form-input p-2 mb-4"
-                  placeholder="Email"
-                  id="email"
-                  name="email"
-          />
-          <button type="submit" class="form-submit-btn py-2">
-            Join Now
-          </button>
-        </form>
+        </div>
+
       </div>
 
+      <div class="
+       transition ease-in-out delay-150
+      bg-white  border border-gray-200 mx-4 px-4 rounded shadow dark:bg-gray-800 dark:border-gray-800">
+      <div class="flex flex-col justify-between p-6  leading-normal ">
+      <form method="POST" action="/create" class="w-full">
+        <div>
+            <h3 class="font-medium text-gray-900 mb-4 text-2xl dark:text-white">Join to Virtual Booth</h3>
+        </div>
+        <div class="mb-6">
+          <label for="first_name" class="block mb-2 text-left text-sm font-medium text-gray-900 dark:text-white">First Name</label>
+          <input
+                  type="text"
+                  placeholder="First Name"
+                  id="first_name"
+                  name="first_name"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  required>
+        </div>
+        <div class="mb-6">
+          <label for="last_name" class="block mb-2 text-left text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
+          <input
+                  type="text"
+                  placeholder="Last Name"
+                  id="last_name"
+                  name="last_name"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  required>
+        </div>
+        <div class="mb-6">
+          <label for="email" class="block mb-2 text-left text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
+          <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="name@test.com" required>
+        </div>
+
+        <button type="submit"
+                id="form-submit"
+                class="
+
+                transition transform ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300
+                form-submit-btn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
+                focus:outline-none focus:ring-blue-300 font-medium rounded-lg
+                text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700
+                dark:focus:ring-blue-800 px-6"
+                >Join Now</button>
+
+      </form>
+      </div>
+      </div>
     </div>
+
+
   </div>
 
   <!--Waves Container-->
-  <div>
+  <div class="hidden md:block xl:block z-2">
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
       <defs>
@@ -64,10 +98,12 @@ of Simple CSS Waves-->
 <!--Header ends-->
 
 <!--Content starts-->
+<div class="hidden md:block xl:block">
 <div class="content flex flex-col">
   <img src="../images/sandoz-logo.svg" width="200"/>
   <br/>
   <p><%= footer %> </p>
+</div>
 </div>
 <!--Content ends-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js" integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

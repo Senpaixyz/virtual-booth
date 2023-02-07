@@ -1,5 +1,7 @@
 var express = require('express');
 const db = require("../database");
+const jwt = require('jsonwebtoken');
+const auth = require('../auth');
 var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -20,10 +22,24 @@ router.post('/create', async function(req, res, next) {
     }
     else{
       db.createUser(first_name,last_name, email);
+
+      const user = await db.getUser(email);
+
+      const token = jwt.sign(
+          {
+            id: user.id,
+            firstName: first_name,
+            lastName: last_name,
+            email: email
+          },
+          auth.secret,
+          { expiresIn: '3h' });
+
       // db.closeDB();
       res.status(200).json({
         status: 'success',
-        message: 'Data Inserted',
+        token: token,
+        message: 'Redirecting to Virtual Booth',
       });
     }
 
@@ -40,8 +56,7 @@ router.post('/create', async function(req, res, next) {
 });
 
 router.get('/get-users',async function(req, res, next) {
-    // fetch all users
-    // create virtual booth page and menu
+
     try{
       const users = await db.getUsers();
 
@@ -58,5 +73,8 @@ router.get('/get-users',async function(req, res, next) {
       });
     }
 });
+
+
+
 
 module.exports = router;
