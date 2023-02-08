@@ -1,11 +1,16 @@
 var express = require('express');
-const db = require("../database");
+const db = require("../mysql_database");
 const jwt = require('jsonwebtoken');
 const auth = require('../auth');
+const {v4 : uuidv4} = require('uuid');
+
 var router = express.Router();
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Virtual Booth', footer: 'Virtual Booth Corp' });
+    let title = process.env.title || 'Virtual Booth';
+    res.render('index', { title: title, footer: 'Virtual Booth Corp' });
 });
 
 router.post('/create', async function(req, res, next) {
@@ -14,33 +19,41 @@ router.post('/create', async function(req, res, next) {
     const last_name = req.body.lastName;
     const email = req.body.email;
 
-    const duplicatedUser = await db.getUser(email);
+    const duplicatedUser = await db.getUserData('users',email);
 
-    if(duplicatedUser.length >= 1){
+    if(duplicatedUser.length > 0){
       // db.closeDB();
+        console.log(duplicatedUser);
       throw new Error('Email Already Exists!');
     }
     else{
-      db.createUser(first_name,last_name, email);
+          db.insertData('users',
+              {
+                  first_name,last_name, email
+              },(result)=>{
+              console.log(`Data Inserted Callback Success ${result}`)
+          });
 
-      const user = await db.getUser(email);
+          let userId = uuidv4();
 
-      const token = jwt.sign(
-          {
-            id: user.id,
-            firstName: first_name,
-            lastName: last_name,
-            email: email
-          },
-          auth.secret,
-          { expiresIn: '3h' });
+          const user = await db.getUserData('users',email);
 
-      // db.closeDB();
-      res.status(200).json({
-        status: 'success',
-        token: token,
-        message: 'Redirecting to Virtual Booth',
-      });
+          const token = jwt.sign(
+              {
+                id: user.id,
+                firstName: first_name,
+                lastName: last_name,
+                email: email
+              },
+              auth.secret,
+              { expiresIn: '3h' });
+
+          // db.closeDB();
+          res.status(200).json({
+            status: 'success',
+            token: token,
+            message: 'Redirecting to Virtual Booth',
+          });
     }
 
   }
@@ -58,7 +71,7 @@ router.post('/create', async function(req, res, next) {
 router.get('/get-users',async function(req, res, next) {
 
     try{
-      const users = await db.getUsers();
+      const users = await db.getUsersData('users');
 
       res.status(200).json({
           status: 'success',
