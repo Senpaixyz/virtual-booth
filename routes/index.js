@@ -18,18 +18,26 @@ router.post('/create', async function(req, res, next) {
     const first_name = req.body.firstName;
     const last_name = req.body.lastName;
     const email = req.body.email;
+    const speciality = req.body.speciality;
+    const prc = req.body.prc;
+    const terms_and_condition = req.body.terms_and_condition;
 
     const duplicatedUser = await db.getUserData('users',email);
 
+
     if(duplicatedUser.length > 0){
-      // db.closeDB();
         console.log(duplicatedUser);
-      throw new Error('Email Already Exists!');
+        throw new Error('Email Already Exists!');
     }
     else{
-          db.insertData('users',
+          const result = await db.insertData('users',
               {
-                  first_name,last_name, email
+                  first_name,
+                  last_name,
+                  email,
+                  speciality,
+                  prc,
+                  terms_and_condition,
               },(result)=>{
               console.log(`Data Inserted Callback Success ${result}`)
           });
@@ -40,10 +48,13 @@ router.post('/create', async function(req, res, next) {
 
           const token = jwt.sign(
               {
-                id: user.id,
-                firstName: first_name,
-                lastName: last_name,
-                email: email
+                    id: user.id,
+                    firstName: first_name,
+                    lastName: last_name,
+                    email: email,
+                    speciality: speciality,
+                    prc: prc
+
               },
               auth.secret,
               { expiresIn: '3h' });
@@ -58,10 +69,11 @@ router.post('/create', async function(req, res, next) {
 
   }
   catch(err) {
-    res.status(200).json({
-      status: 'failed',
-      message: err.message,
-    });
+        console.log(err);
+        res.status(200).json({
+          status: 'failed',
+          message: err.message,
+        });
   }
 
 
@@ -71,19 +83,20 @@ router.post('/create', async function(req, res, next) {
 router.get('/get-users',async function(req, res, next) {
 
     try{
-      const users = await db.getUsersData('users');
+          const users = await db.getUsersData('users');
 
-      res.status(200).json({
-          status: 'success',
-          message: 'Fetch Success',
-          data: users
-      });
+          res.status(200).json({
+              status: 'success',
+              message: 'Fetch Success',
+              data: users
+          });
     }
     catch(err){
-      res.status(200).json({
-        status: 'failed',
-        message: err.message,
-      });
+        console.log(err);
+        res.status(200).json({
+            status: 'failed',
+            message: err.message,
+        });
     }
 });
 

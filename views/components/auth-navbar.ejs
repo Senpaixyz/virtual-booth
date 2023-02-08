@@ -4,8 +4,13 @@
             <img src="../images/sandoz-logo.svg" width="200"/>
         </a>
         <div class="flex items-center md:order-2">
+            <p class="text-xs text-gray-900 dark:text-white mr-3">Back to PLAS-PSH 2023 Main Hall</p>
+            <img src="/images/logo/plas.png" class="w-10 mx-1"/>
+            <img src="/images/logo/psoh.png" class="w-10 mx-1"/>
             <!-- Dark mode switcher -->
             <button
+                    data-tooltip-target="tooltip-bottom"
+                    data-tooltip-placement="bottom"
                     id="theme-toggle"
                     type="button"
                     class="mx-4 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
@@ -35,15 +40,26 @@
                     ></path>
                 </svg>
             </button>
+            <div id="tooltip-bottom" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Night Mode Toggle
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
 
 
 
 
-            <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+            <button
+                    data-tooltip-target="users-tooltip-bottom"
+                    data-tooltip-placement="bottom"
+                    type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                 <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                     <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                 </div>
             </button>
+            <div id="users-tooltip-bottom" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Registered
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
             <!-- Dropdown menu -->
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
                 <div class="px-4 py-3">
