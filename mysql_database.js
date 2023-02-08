@@ -58,8 +58,7 @@ const createUsersTable = () => {
       speciality VARCHAR(255) NOT NULL,
       prc VARCHAR(255) NOT NULL,
       terms_and_condition BOOLEAN NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `, (error) => {
         if (error) throw error;
