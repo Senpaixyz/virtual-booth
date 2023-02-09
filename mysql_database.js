@@ -1,15 +1,30 @@
 const mysql = require('mysql');
+require('dotenv').config();
 
-// convert this as env later
-const host = 'sql12.freemysqlhosting.net';
-const user = 'sql12596602';
-const password = 'U2CINsijCH';
-const database = 'sql12596602'; // virtual-booth
+let host = "";
+let user = "";
+let password = "";
+let database = "";
 
-// const host = 'localhost';
-// const user = 'root';
-// const password = '';
-// const database = 'virtual-booth';
+if(process.env.DEBUG){
+    host = process.env.LOCALHOST;
+    user = process.env.LOCALHOST_USER;
+    password = process.env.LOCALHOST_PASSWORD;
+    database = process.env.LOCALHOST_DATABASE;
+}
+else{
+    host = process.env.HOST;
+    user = process.env.USER;
+    password = process.env.PASSWORD;
+    database = process.env.DATABASE;
+}
+
+// const host = 'sql12.freemysqlhosting.net';
+// const user = 'sql12596602';
+// const password = 'U2CINsijCH';
+// const database = 'sql12596602'; // virtual-booth
+
+
 
 // Create a connection to the database
 let connection = mysql.createConnection({
@@ -58,6 +73,7 @@ const createUsersTable = () => {
       speciality VARCHAR(255) NOT NULL,
       prc VARCHAR(255) NOT NULL,
       terms_and_condition BOOLEAN NOT NULL,
+      first_logged BOOLEAN DEFAULT 1 NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `, (error) => {
@@ -113,13 +129,14 @@ const getUserData = (table,inputEmail) => {
         }
 
 
-        connection.query(`SELECT * FROM ${table} WHERE email = ?`,[inputEmail], (error, results) => {
+        connection.query(`SELECT * FROM ${table} WHERE email = ? LIMIT 1`,[inputEmail], (error, results) => {
             if (error) reject(error);
             resolve(results);
         });
 
     });
 };
+
 
 // Create a function for performing an INSERT operation
 const insertData = async (table, data, callback) => {
@@ -139,7 +156,18 @@ const insertData = async (table, data, callback) => {
 
 // Create a function for performing an UPDATE operation
 const updateData = (table, data, condition, callback) => {
-    connection.query(`UPDATE ${table} SET ? WHERE ?`, [data, condition], (error, results) => {
+    let query = `UPDATE ${table} SET `;
+    let setValues = '';
+    Object.keys(data).forEach((key, index) => {
+        setValues += `${key} = '${data[key]}'`;
+        if (index < Object.keys(data).length - 1) {
+            setValues += ', ';
+        }
+    });
+    query += setValues;
+    query += ` WHERE ${condition}`;
+
+    connection.query(query, (error, results) => {
         if (error) throw error;
         callback(results);
     });

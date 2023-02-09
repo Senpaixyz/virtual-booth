@@ -3,14 +3,17 @@ const db = require("../mysql_database");
 const jwt = require('jsonwebtoken');
 const auth = require('../auth');
 const {v4 : uuidv4} = require('uuid');
-
+require('dotenv').config();
 var router = express.Router();
-
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    let title = process.env.title || 'Virtual Booth';
-    res.render('index', { title: title, footer: 'Virtual Booth Corp' });
+    let title = process.env.APP_NAME || 'Virtual Booth';
+    res.render('index', {
+        title: title,
+        footer: title,
+        chatbot_api: process.env.CHATBOT_PUBLIC_API
+    });
 });
 
 router.post('/create', async function(req, res, next) {
@@ -44,16 +47,18 @@ router.post('/create', async function(req, res, next) {
 
           let userId = uuidv4();
 
-          const user = await db.getUserData('users',email);
+          const userData = await db.getUserData('users',email);
+          const user = userData[0]
 
           const token = jwt.sign(
               {
                     id: user.id,
-                    firstName: first_name,
-                    lastName: last_name,
-                    email: email,
-                    speciality: speciality,
-                    prc: prc
+                    firstName: user.first_name,
+                    lastName: user.last_name,
+                    email: user.email,
+                    speciality: user.speciality,
+                    prc: user.prc,
+                    first_logged: user.first_logged
 
               },
               auth.secret,

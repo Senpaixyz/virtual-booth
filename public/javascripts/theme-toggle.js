@@ -5,9 +5,17 @@ var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     themeToggleLightIcon.classList.remove('hidden');
     document.documentElement.classList.add('dark');
+
+    if (window.tidioChatApi) {
+        tidioChatApi.setColorPalette('#1F2937');
+    }
 } else {
     themeToggleDarkIcon.classList.remove('hidden');
     document.documentElement.classList.add('light');
+
+    if (window.tidioChatApi) {
+        tidioChatApi.setColorPalette('#0061aa');
+    }
 }
 
 var themeToggleBtn = document.getElementById('theme-toggle');
@@ -23,9 +31,18 @@ themeToggleBtn.addEventListener('click', function() {
         if (localStorage.getItem('color-theme') === 'light') {
             document.documentElement.classList.add('dark');
             localStorage.setItem('color-theme', 'dark');
+
+            if (window.tidioChatApi) {
+                tidioChatApi.setColorPalette('#1F2937');
+            }
+
         } else {
             document.documentElement.classList.remove('dark');
             localStorage.setItem('color-theme', 'light');
+
+            if (window.tidioChatApi) {
+                tidioChatApi.setColorPalette('#0061aa');
+            }
         }
 
         // if NOT set via local storage previously
@@ -33,9 +50,18 @@ themeToggleBtn.addEventListener('click', function() {
         if (document.documentElement.classList.contains('dark')) {
             document.documentElement.classList.remove('dark');
             localStorage.setItem('color-theme', 'light');
+
+            if (window.tidioChatApi) {
+                tidioChatApi.setColorPalette('#1F2937');
+            }
+
         } else {
             document.documentElement.classList.add('dark');
             localStorage.setItem('color-theme', 'dark');
+
+            if (window.tidioChatApi) {
+                tidioChatApi.setColorPalette('#0061aa');
+            }
         }
     }
 
