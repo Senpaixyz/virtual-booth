@@ -6,7 +6,7 @@ let user = "";
 let password = "";
 let database = "";
 
-if(process.env.DEBUG){
+if(process.env.APP_DEBUG == 'true'){
     host = process.env.LOCALHOST;
     user = process.env.LOCALHOST_USER;
     password = process.env.LOCALHOST_PASSWORD;
@@ -18,13 +18,6 @@ else{
     password = process.env.PASSWORD;
     database = process.env.DATABASE;
 }
-
-// const host = 'sql12.freemysqlhosting.net';
-// const user = 'sql12596602';
-// const password = 'U2CINsijCH';
-// const database = 'sql12596602'; // virtual-booth
-
-
 
 // Create a connection to the database
 let connection = mysql.createConnection({
